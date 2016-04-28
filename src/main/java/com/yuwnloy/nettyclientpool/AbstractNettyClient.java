@@ -13,7 +13,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 public abstract class AbstractNettyClient<T> {
-	private int timeout = 10;
+	private int timeout = -1;
 	private final LinkedBlockingQueue<T> queue = new LinkedBlockingQueue<T>(10);
 	private EventLoopGroup group = new NioEventLoopGroup();
 	
@@ -23,6 +23,11 @@ public abstract class AbstractNettyClient<T> {
 	public AbstractNettyClient(String host, int port){
 		this.host = host;
 		this.port = port;
+	}
+	public AbstractNettyClient(String host, int port, int timeout){
+		this.host = host;
+		this.port = port;
+		this.timeout = timeout;
 	}
 	public String getHost(){
 		return this.host;
@@ -81,14 +86,18 @@ public abstract class AbstractNettyClient<T> {
 	}
 	
 	public T syncSendMsg(T msg){
-		if(timeout<=0||msg==null){
+		if(msg==null){
 			return null;
 		}
+		this.queue.clear();
 		boolean ret = this.sendMsg(msg);
 		T result = null;
 		if(ret){
 			try {
-				result = this.queue.poll(timeout, TimeUnit.SECONDS);
+				if(timeout<=0)
+					result = this.queue.take();
+				else
+					result = this.queue.poll(timeout, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
