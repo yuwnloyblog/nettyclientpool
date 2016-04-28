@@ -5,11 +5,14 @@ import org.apache.commons.pool.impl.GenericObjectPool;
 
 
 public abstract class Pool<T> {
-    private final GenericObjectPool<T> internalPool;
+    private GenericObjectPool<T> internalPool;
 
-    public Pool(final GenericObjectPool.Config poolConfig,
-            PoolableObjectFactory<T> factory) {
-        this.internalPool = new GenericObjectPool<T>(factory, poolConfig);
+    public Pool() {
+    }
+    
+    protected void createObjectPool(final GenericObjectPool.Config poolConfig,
+            PoolableObjectFactory<T> factory){
+    	this.internalPool = new GenericObjectPool<T>(factory, poolConfig);
     }
 
     public T getNettyClient() {

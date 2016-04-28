@@ -137,13 +137,13 @@ public abstract class AbstractNettyClient<T> {
 			this.group = null;
 		}
 	}
-//	private NettyClientPool pool;
-//	protected void setNettyClientPool(NettyClientPool pool){
-//		this.pool = pool;
-//	}
-//	public void release(){
-//		if(this.pool!=null){
-//			this.pool.releaseNettyClient(this);
-//		}
-//	}
+	private NettyClientPool pool;
+	protected void setNettyClientPool(NettyClientPool pool){
+		this.pool = pool;
+	}
+	public void release(){
+		if(this.pool!=null){
+			this.pool.releaseNettyClient(this);
+		}
+	}
 }
