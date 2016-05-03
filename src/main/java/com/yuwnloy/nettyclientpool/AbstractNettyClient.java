@@ -15,7 +15,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 public abstract class AbstractNettyClient<T> {
 	private int timeout = -1;
 	private final LinkedBlockingQueue<T> queue = new LinkedBlockingQueue<T>(10);
-	private EventLoopGroup group = new NioEventLoopGroup();
+	private static EventLoopGroup group = new NioEventLoopGroup();
 	
 	private String host;
 	private int port;
