@@ -6,9 +6,9 @@ import org.apache.commons.pool.impl.GenericObjectPool.Config;
 
 public class NettyClientPool extends Pool<AbstractNettyClient<?>>{
 
-	public NettyClientPool(Config poolConfig, INettyClientCreater creater){
+	public NettyClientPool(Config poolConfig, INettyClientCreator creator){
 		super();
-		this.createObjectPool(poolConfig,new NettyClientFactory(creater,this));
+		this.createObjectPool(poolConfig,new NettyClientFactory(creator,this));
 	}
 
 	public NettyClientPool(Config poolConfig, PoolableObjectFactory<AbstractNettyClient<?>> factory) {
@@ -17,15 +17,15 @@ public class NettyClientPool extends Pool<AbstractNettyClient<?>>{
 	}
 	
 	private static class NettyClientFactory extends BasePoolableObjectFactory<AbstractNettyClient<?>> {
-		private INettyClientCreater creater;
+		private INettyClientCreator creator;
 		private NettyClientPool pool;
-		public NettyClientFactory(INettyClientCreater creater, NettyClientPool pool){
-			this.creater = creater;
+		public NettyClientFactory(INettyClientCreator creator, NettyClientPool pool){
+			this.creator = creator;
 			this.pool = pool;
 		}
 		@Override
 		public AbstractNettyClient<?> makeObject() throws Exception {
-			AbstractNettyClient<?> client = this.creater.createNettyClient();
+			AbstractNettyClient<?> client = this.creator.createNettyClient();
 			client.setNettyClientPool(this.pool);
 			return client;
 		}

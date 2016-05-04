@@ -1,5 +1,5 @@
 package com.yuwnloy.nettyclientpool;
 
-public interface INettyClientCreater {
+public interface INettyClientCreator {
 	public AbstractNettyClient<?> createNettyClient();
 }
